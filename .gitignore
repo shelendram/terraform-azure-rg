@@ -1,0 +1,19 @@
+# Terraform cache
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Terraform plan files
+*.tfplan
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI config
+.terraformrc
+terraform.rc

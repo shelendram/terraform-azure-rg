@@ -10,6 +10,10 @@ on:
         options:
           - plan
           - apply
+      change_number:
+        description: "Enter Change / Ticket Number (e.g. CHG-12345)"
+        required: false
+        type: string
 
 jobs:
   terraform-plan:
@@ -22,41 +26,33 @@ jobs:
       ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-
-    - name: Terraform Init
-      run: terraform init
-
-    - name: Terraform Plan
-      run: terraform plan
+    - uses: actions/checkout@v4
+    - uses: hashicorp/setup-terraform@v3
+    - run: terraform init
+    - run: terraform plan
 
 
   terraform-apply:
-    # 👇 Apply sirf tab chale jab action = apply
     if: ${{ github.event.inputs.action == 'apply' }}
-    needs: terraform-plan        # 👈 PLAN KE BAAD HI APPLY
+    needs: terraform-plan
     runs-on: ubuntu-latest
-    environment: prod            # 👈 MANUAL APPROVAL HERE
+    environment: prod   # 👈 approval happens here
 
     env:
       ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
       ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
       ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
       ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+      CHANGE_NUMBER: ${{ github.event.inputs.change_number }}
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+    - uses: hashicorp/setup-terraform@v3
+    - run: terraform init
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-
-    - name: Terraform Init
-      run: terraform init
+    - name: Show Change Number
+      run: |
+        echo "Change Number used for this deployment: $CHANGE_NUMBER"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve

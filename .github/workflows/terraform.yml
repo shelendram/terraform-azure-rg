@@ -4,16 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "Select Terraform action"
+        description: "Select action"
         required: true
         type: choice
         options:
-          - terraform plan
-          - terraform apply
+          - plan
+          - apply
 
 jobs:
   terraform-plan:
-    if: ${{ github.event.inputs.action == 'terraform plan' }}
     runs-on: ubuntu-latest
 
     env:
@@ -37,9 +36,11 @@ jobs:
 
 
   terraform-apply:
-    if: ${{ github.event.inputs.action == 'terraform apply' }}
+    # 👇 Apply sirf tab chale jab action = apply
+    if: ${{ github.event.inputs.action == 'apply' }}
+    needs: terraform-plan        # 👈 PLAN KE BAAD HI APPLY
     runs-on: ubuntu-latest
-    environment: prod   # 👈 THIS triggers manual approval + description box
+    environment: prod            # 👈 MANUAL APPROVAL HERE
 
     env:
       ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}

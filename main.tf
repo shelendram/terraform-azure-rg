@@ -75,7 +75,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "linux-vm-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  size                = "Standard_B1s"
+
+  size = "Standard_D2s_v3"
 
   admin_username = "azureuser"
   admin_password = data.azurerm_key_vault_secret.vm_password.value
@@ -92,9 +93,14 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
+    offer     = "0001-com-ubuntu-server-noble"
+    sku       = "24_04-lts-gen2"
     version   = "latest"
   }
+
+  security_type       = "TrustedLaunch"
+  secure_boot_enabled = true
+  vtpm_enabled        = true
 }
+
 

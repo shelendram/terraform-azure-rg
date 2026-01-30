@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = ">= 3.74.0"
     }
   }
 
@@ -75,8 +75,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "linux-vm-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-
-  size = "Standard_D2s_v3"
+  size                = "Standard_D2s_v3"
 
   admin_username = "azureuser"
   admin_password = data.azurerm_key_vault_secret.vm_password.value
@@ -97,10 +96,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "24_04-lts-gen2"
     version   = "latest"
   }
-
-  security_type       = "TrustedLaunch"
-  secure_boot_enabled = true
-  vtpm_enabled        = true
+  
 }
-
-

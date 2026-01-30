@@ -75,7 +75,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "linux-vm-01"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  size                = "Standard_DS1_v2"
+  size                = "Standard_B1s"
 
   admin_username = "azureuser"
   admin_password = data.azurerm_key_vault_secret.vm_password.value

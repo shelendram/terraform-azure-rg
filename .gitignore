@@ -1,14 +1,15 @@
-# Terraform cache
+##################################
+# Terraform
+##################################
 .terraform/
-
-# Terraform state files
 *.tfstate
-*.tfstate.backup
-
-# Terraform plan files
+*.tfstate.*
 *.tfplan
+terraform.tfvars
+terraform.tfvars.json
+crash.log
 
-# Terraform override files
+# Override files
 override.tf
 override.tf.json
 *_override.tf
@@ -17,3 +18,43 @@ override.tf.json
 # Terraform CLI config
 .terraformrc
 terraform.rc
+
+
+##################################
+# Azure / Credentials
+##################################
+*.pem
+*.key
+*.pfx
+*.crt
+*.env
+.env
+secrets.tfvars
+
+
+##################################
+# GitHub Actions
+##################################
+.github/workflows/*.log
+
+
+##################################
+# Editors & OS
+##################################
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+
+##################################
+# Logs & temp
+##################################
+*.log
+*.tmp
+*.bak
